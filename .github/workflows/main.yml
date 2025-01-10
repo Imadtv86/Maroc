@@ -1,0 +1,24 @@
+name: YouTube Live Streaming
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  stream_to_youtube:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up FFmpeg
+        run: sudo apt-get update && sudo apt-get install ffmpeg -y
+
+      - name: Start Streaming to YouTube
+        env:
+          YOUTUBE_STREAM_KEY: 0zru-1w0v-j4q5-46ck-eg6m  # YouTube Stream Key
+          M3U8_LINK: https://video-weaver.cdg10.hls.live-video.net/v1/playlist/CsMFi1hLMMbTWRFrmAB4XckNOW3-jsZEp9D7bWhJlKWV78bpFVsrhadrIgrSCpxObm8vdCQ9OUu49D7Q7t34UfULVa4UalVECU4Y36x_lYmUGsmXY0JDy83jqmcU_dpuLRet1l8NoQL-5HgIViOJ1zny8pRqEtdB4cjSIIHaw9x9hizi3P5ZKyK1W8eoQPmGNv7Z42qX7FBsGOSs3k88gTN4e9wLnt32cS01NDnmxBTp5KD5vsu7flP4MdqGY6TYD-drZ4Xv5H-tQQjRmKgez904U3493K1m3HXBHU0by-Xa7JeT4QkvjZ_4tMVZThjI-6ogxR7y-PUSzgeO4ocu0yCkULz3xXAYYJjRd2c3B0xWMW2SrSkru81bSmooll6wsFK8CdiCJm8bVI_4U8FX1-Mr9BWcgc5Wbj2ntHDKI6pd5RN6fVJprUGBgETZvH7kxEZLOaf_B2eaNfc1LSPLwQERylAwnfsYCssNVz7Pcvri8rTRQ8YgiqaGXsJWU6OZMt6WH1pbl7SHC4h38psULqBMhxu0A3G6zO8L-f-DAEtQqnOSb_s6MVG3mnVWyXeuHEpeYtK-lcE8_tWvdqI_vO0hgdYyv6xZxbyciMrLyg_W9CHvuLzLoliHCadOBTmi8euZZ9WcTxyOq3ZICBE9QMGNcsgqNI6_Ngyt1Zb_8UqeuEHnBm0cJQewIXrZqEb8RELK10dK4JcGb2vKdH7Xo8Kjzus0VgJ5k18lykxeq_4RpCWuKXrxwx18vk8jSNPrH7lrOrpWe1L_BqGJ3PLpbxAQ2_QohuqJ9kh9rsxioGeJCf4I5iMkWDStd5G0qzYxd6i6rNmoarQhluse0PhHuAeUev_ov3AWkbk3BPHyw7-cpgHlMt-VFd_xe6nY8KsIQfzjUhVibLr1gShCVgS_aWOBKwLcurQyS8q_syYpt2YUYQiREAwaDENpXMGlRIKncv-BuSABKglldS13ZXN0LTIwpws.m3u8  # M3U8 Link
+        run: |
+          ffmpeg -i $M3U8_LINK -f flv rtmp://a.rtmp.youtube.com/live2/$YOUTUBE_STREAM_KEY
+          
